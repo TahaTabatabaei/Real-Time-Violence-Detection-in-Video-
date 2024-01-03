@@ -3,7 +3,7 @@ from skimage.transform import resize
 
 
 def video_mamonreader(cv2,filename):
-    frames = np.zeros((30, 160, 160, 3), dtype=np.float)
+    frames = np.zeros((30, 160, 160, 3), dtype=float)
     i=0
     print(frames.shape)
     vc = cv2.VideoCapture(filename)
@@ -29,14 +29,14 @@ def video_mamonreader(cv2,filename):
     return frames
 
 def mamon_videoFightModel(tf,wight='mamon-videofight100.hdf5'):
-    layers = tf.contrib.keras.layers
-    models = tf.contrib.keras.models
-    losses = tf.contrib.keras.losses
-    optimizers = tf.contrib.keras.optimizers
-    metrics = tf.contrib.keras.metrics
+    layers = tf.keras.layers
+    models = tf.keras.models
+    losses = tf.keras.losses
+    optimizers = tf.keras.optimizers
+    metrics = tf.keras.metrics
     num_classes = 2
     input_shapes = (160,160,3)
-    vg19 = tf.contrib.keras.applications.vgg19.VGG19
+    vg19 = tf.keras.applications.vgg19.VGG19
     base_model = vg19(include_top=False,weights=None,input_shape=(100,100,3))
     for layer in base_model.layers:
         layer.trainable = False
@@ -60,11 +60,11 @@ def mamon_videoFightModel(tf,wight='mamon-videofight100.hdf5'):
 
 
 def mamon_videoFightModel2(tf,wight='mamonbest947oscombo.hdfs'):
-    layers = tf.contrib.keras.layers
-    models = tf.contrib.keras.models
-    losses = tf.contrib.keras.losses
-    optimizers = tf.contrib.keras.optimizers
-    metrics = tf.contrib.keras.metrics
+    layers = tf.keras.layers
+    models = tf.keras.models
+    losses = tf.keras.losses
+    optimizers = tf.keras.optimizers
+    metrics = tf.keras.metrics
     num_classes = 2
     cnn = models.Sequential()
     #cnn.add(base_model)

@@ -1,0 +1,3 @@
+# Ignore directories containing mp4 files
+**/*.mp4
+**/*.hdfs
