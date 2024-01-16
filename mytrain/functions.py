@@ -86,10 +86,6 @@ def load_dataset(data_dir):
                 if not ret:
                     break
                 frm = resize(frame, (160, 160, 3))
-                # old.append(frame)
-                # fshape = frame.shape
-                # fheight = fshape[0]
-                # fwidth = fshape[1]
                 frm = np.expand_dims(frm,axis=0)
                 if(np.max(frm)>1):
                     frm = frm/255.0
@@ -104,57 +100,12 @@ def load_dataset(data_dir):
                 i += 1
             cap.release()
 
-            # Use every 30 frames
-            # for i in range(0, len(frames), 30):
-            #     X.append(frames[i:np.min((i+30),len(frames))])
-            #     y.append(value)
 
     X = np.array(X)
     y = np.array(y)
 
     return X, y
 
-def train_video_model(data_dir, epochs=20, batch_size=4, model_weight='tahaWeights.h5'):
-    # tf = # Add your TensorFlow import here
-    model = videoFightModel(tf, is_train=True)
-    print(model.summary())
-
-    X, y = load_dataset(data_dir)
-    print(f"X shape: {X.shape}")
-    print(f"y shape: {y.shape}")
-
-    # Split the dataset into training and validation sets
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    print(f"X_train shape: {X_train.shape}")
-    print(f"y_train shape: {y_train.shape}")
-    print(f"X_val shape: {X_val.shape}")
-    print(f"y_val shape: {y_val.shape}")
-
-    # Data normalization
-    # X_train = X_train / 255.0
-    # X_val = X_val / 255.0
-
-    # Model training
-    history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=epochs, batch_size=batch_size)
-    print(f"Training accuracy: {history.history['acc'][-1]}")
-    print(f"Validation accuracy: {history.history['val_acc'][-1]}")
-
-    # Save the trained weights
-    model.save_weights(model_weight)
-    print(f"Saved model weights to {model_weight}")
-
-    # Plot training and validation loss
-    plt.plot(history.history['loss'], label='Training Loss')
-    plt.plot(history.history['val_loss'], label='Validation Loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.legend()
-    plt.show()
-
-# # Example usage:
-# data_directory = "fight-detection-surv-dataset-master"
-# train_video_model(data_directory)
 def test_model(model, X_test, y_test):
     print("Testing the model...")
     loss, accuracy = model.evaluate(X_test, y_test, batch_size=4)
@@ -184,7 +135,7 @@ def stream(filename, model_dir):
             predaction = pred_fight(model,ysdatav2,acuracy=0.967355)
 
             if predaction[0] == True:
-                print(predaction[1])
+                # print(predaction[1])
                 cv2.putText(frame, 
                     'Violance Deacted', 
                     (50, 50), 
@@ -208,12 +159,15 @@ def stream(filename, model_dir):
             frm = np.expand_dims(frm,axis=0)
             if(np.max(frm)>1):
                 frm = frm/255.0
-            frames[i][:] = frm
-            
-            i+=1
+
+            #  frame skipping. set j%1 to use all frames
+            if j%2 == 0:
+                frames[i][:] = frm
+                
+                i+=1
         
         cv2.imshow('video', frame)
-    
+        j += 1
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
