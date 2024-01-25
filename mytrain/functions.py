@@ -5,7 +5,7 @@ import os
 import glob
 import cv2
 
-def videoFightModel(tf=tf,wight='tahaWeights.h5',is_train=False):
+def videoFightModel(tf=tf,wight='myWeights.hdfs',is_train=False):
     layers = tf.keras.layers
     models = tf.keras.models
     losses = tf.keras.losses

@@ -1,3 +1,8 @@
 # Ignore directories containing mp4 files
 **/*.mp4
+**/*.h5
 **/*.hdfs
+*.zip*
+*.npy
+*.npz
+
